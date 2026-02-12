@@ -1,0 +1,53 @@
+{
+  "feature": "VIEW_PRODUCT",
+  "scenario": "User can view a product's details",
+    "flow": [
+    {
+      "steps": [
+
+        {
+          "action": "capture_product_details",
+          "target": "INVENTORY_CARDS",
+          "value": "PRODUCT_TO_VIEW",
+          "save_as": "product_details"
+        },
+
+        {
+          "action": "click",
+          "target": "INVENTORY_CARDS",
+          "value": "PRODUCT_TO_VIEW"
+
+        }
+
+      ],
+      "assertions": [
+        {
+          "action": "expect",
+          "target": "PRODUCT_NAME",
+          "value": "PRODUCT_TO_VIEW"
+
+        },
+
+        {
+          "action": "expect",
+          "target": "PRODUCT_DETAILS",
+          "rule": "product_details_match",
+          "context_key": "product_details"
+
+        }
+
+      ]
+
+    },
+      {
+        "steps": [
+
+        {
+          "action": "click",
+          "target": "CONTINUE_SHOPPING_BUTTON"
+        }
+          ]
+      }
+
+  ]
+}

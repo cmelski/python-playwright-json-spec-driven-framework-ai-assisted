@@ -1,0 +1,12 @@
+{
+  "test_run_results": [
+    {
+      "test_name": "tests/test_from_spec.py::test_from_spec",
+      "result": "PASSED",
+      "error": "N/A",
+      "test_start": "2026-02-12T11:13:56.796267",
+      "test_end": "2026-02-12T11:14:12.233729",
+      "duration": 6.210892908042297
+    }
+  ]
+}

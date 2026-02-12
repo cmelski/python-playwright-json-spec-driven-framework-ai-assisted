@@ -1,0 +1,47 @@
+{
+  "feature": "LOGIN",
+  "scenario": "User logs in with valid credentials",
+  "flow": [
+    {
+      "assertions": [
+        {
+          "action": "expect",
+          "target": "LOGIN_PAGE",
+          "state": "toHaveURL"
+        }
+      ]
+    },
+    {
+      "steps": [
+        {
+          "action": "fill",
+          "target": "USERNAME_INPUT",
+          "value": "VALID_USERNAME"
+        },
+        {
+          "action": "fill",
+          "target": "PASSWORD_INPUT",
+          "value": "VALID_PASSWORD"
+        },
+        {
+          "action": "click",
+          "target": "LOGIN_BUTTON"
+        }
+      ],
+      "assertions": [
+        {
+          "action": "expect",
+          "target": "INVENTORY_CARDS",
+          "state": "toHaveCount",
+          "rule": ">=1"
+        },
+        {
+          "action": "expect",
+          "target": "DASHBOARD_PAGE",
+          "state": "toHaveURL"
+        }
+      ]
+    }
+
+  ]
+}

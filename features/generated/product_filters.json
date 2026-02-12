@@ -1,0 +1,73 @@
+{
+  "feature": "PRODUCT_FILTERS",
+  "scenario": "Product filters work as expected",
+  "flow": [
+    {
+      "steps": [
+        {
+          "action": "clear_form_filters",
+          "target": "FILTERS_FORM"
+        },
+        {
+          "action": "save_products_unfiltered",
+          "target": "INVENTORY_CARDS",
+          "save_as": "unfiltered_product_dict"
+        },
+        {
+          "action": "fill",
+          "target": "MIN_PRICE_FILTER",
+          "value": "10000"
+        },
+        {
+          "action": "fill",
+          "target": "MAX_PRICE_FILTER",
+          "value": "15000",
+          "submit": "true"
+        },
+        {
+          "action": "wait"
+        }
+      ],
+      "assertions": [
+        {
+          "action": "expect",
+          "target": "INVENTORY_CARDS",
+          "rule": "products_reflect_filter",
+          "filter_type": "min_max",
+          "context_key": "unfiltered_product_dict"
+        }
+      ]
+    },
+    {
+      "steps": [
+        {
+          "action": "clear_form_filters",
+          "target": "FILTERS_FORM"
+        },
+        {
+          "action": "save_products_unfiltered",
+          "target": "INVENTORY_CARDS",
+          "save_as": "unfiltered_product_dict"
+        },
+        {
+          "action": "fill",
+          "target": "SEARCH_TEXT_FILTER",
+          "value": "SEARCH_TEXT",
+          "submit": "true"
+        },
+        {
+          "action": "wait"
+        }
+      ],
+      "assertions": [
+        {
+          "action": "expect",
+          "target": "INVENTORY_CARDS",
+          "rule": "products_reflect_filter",
+          "filter_type": "search_text",
+          "context_key": "unfiltered_product_dict"
+        }
+      ]
+    }
+  ]
+}

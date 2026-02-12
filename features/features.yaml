@@ -1,0 +1,8 @@
+# features.yaml
+features:
+  LOGIN:
+    description: User can log in with valid credentials
+  VIEW_PRODUCT:
+    description: User can view a product's details
+  PRODUCT_FILTERS:
+    description: Product filters work as expected
