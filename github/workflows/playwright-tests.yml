@@ -28,6 +28,30 @@ jobs:
         run: |
           playwright install --with-deps
 
+      - name: Install Allure
+        run: |
+          sudo apt-get install -y default-jre
+          wget https://github.com/allure-framework/allure2/releases/latest/download/allure-2.29.0.tgz
+          tar -zxvf allure-2.29.0.tgz
+          sudo mv allure-2.29.0 /opt/allure
+          sudo ln -s /opt/allure/bin/allure /usr/bin/allure
+
       - name: Run Tests
         run: |
-          pytest -v
+          pytest -rA --log-cli-level=INFO --alluredir=allure-results
+        env:
+          BASE_URL: ${{ secrets.BASE_URL }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          VALID_USERNAME: ${{ secrets.VALID_USERNAME }}
+          VALID_PASSWORD: ${{ secrets.VALID_PASSWORD }}
+
+      - name: Upload Test Artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-artifacts
+          path: |
+            test_run_logs/
+            screenshots/
+            allure-results/
+

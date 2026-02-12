@@ -117,29 +117,29 @@ def pytest_runtest_makereport(item, call):
     # --------------------
     # Create Jira issue if enabled
     # --------------------
-    if os.getenv("CREATE_JIRA_ON_FAILURE") == "true":
-        test_name = item.nodeid
-        # test_name = 'jira test'
-        error = str(report.longrepr)
-        jira_project = os.environ.get('JIRA_PROJECT')
-        try:
-            issue_key = get_or_create_issue(test_name, error, jira_project)
-            if issue_key:
-                logger_utility().info(f"Issue key: {issue_key}")
-                print(f"Issue key: {issue_key}")
-                # Add Allure link
-                allure.dynamic.link(os.environ.get('JIRA_URL') + '/browse/' + issue_key,
-                                    name=f"Jira: {issue_key}")
-
-                # Optionally attach the issue key as text too
-                allure.attach(f"Jira issue: {issue_key}", name="Jira Issue Key",
-                              attachment_type=allure.attachment_type.TEXT)
-
-            else:
-                logger_utility().warning("get_or_create_issue returned None")
-        except Exception as e:
-            logger_utility().exception(f"Failed to create Jira issue: {e}")
-            print(f"Failed to create Jira issue: {e}")
+    # if os.getenv("CREATE_JIRA_ON_FAILURE") == "true":
+    #     test_name = item.nodeid
+    #     # test_name = 'jira test'
+    #     error = str(report.longrepr)
+    #     jira_project = os.environ.get('JIRA_PROJECT')
+    #     try:
+    #         issue_key = get_or_create_issue(test_name, error, jira_project)
+    #         if issue_key:
+    #             logger_utility().info(f"Issue key: {issue_key}")
+    #             print(f"Issue key: {issue_key}")
+    #             # Add Allure link
+    #             allure.dynamic.link(os.environ.get('JIRA_URL') + '/browse/' + issue_key,
+    #                                 name=f"Jira: {issue_key}")
+    #
+    #             # Optionally attach the issue key as text too
+    #             allure.attach(f"Jira issue: {issue_key}", name="Jira Issue Key",
+    #                           attachment_type=allure.attachment_type.TEXT)
+    #
+    #         else:
+    #             logger_utility().warning("get_or_create_issue returned None")
+    #     except Exception as e:
+    #         logger_utility().exception(f"Failed to create Jira issue: {e}")
+    #         print(f"Failed to create Jira issue: {e}")
 
     # --------------------
     # Attach logs to Allure
