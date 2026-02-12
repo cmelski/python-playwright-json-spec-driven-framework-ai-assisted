@@ -29,6 +29,13 @@ def pytest_addoption(parser):
     parser.addoption(
         "--env", action="store", default="test", help="Environment to run tests against")
 
+    parser.addoption(
+        "--headless",
+        action="store_true",
+        default=False,
+        help="Run browser in headless mode"
+    )
+
 
 @pytest.fixture(scope="session")
 def env(request):
@@ -235,12 +242,13 @@ def pytest_sessionfinish(session, exitstatus):
 @pytest.fixture(scope="function")
 def page_instance(request, url_start):
     browser_name = request.config.getoption("browser_name")
+    headless = request.config.getoption("--headless")
 
     with sync_playwright() as p:
         if browser_name == "chrome":
-            browser = p.chromium.launch(headless=False)
+            browser = p.chromium.launch(headless=headless)
         elif browser_name == "firefox":
-            browser = p.firefox.launch(headless=False)
+            browser = p.firefox.launch(headless=headless)
 
         context = browser.new_context()
 

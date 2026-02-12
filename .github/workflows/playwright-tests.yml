@@ -30,7 +30,7 @@ jobs:
 
       - name: Run Tests
         run: |
-          pytest -rA --log-cli-level=INFO --alluredir=allure-results
+          pytest --browser_name=chrome --headless -rA --log-cli-level=INFO --alluredir=allure-results
         env:
           BASE_URL: ${{ secrets.BASE_URL }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}

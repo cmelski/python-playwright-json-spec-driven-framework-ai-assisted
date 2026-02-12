@@ -1,5 +1,5 @@
-[32mINFO    [0m utilities.logging_utils:conftest.py:184 ▶ Starting test_from_spec
-[32mINFO    [0m utilities.logging_utils:conftest.py:193 BASE_URL is set: https://rahulshettyacademy.com/client/#/auth/login
+[32mINFO    [0m utilities.logging_utils:conftest.py:191 ▶ Starting test_from_spec
+[32mINFO    [0m utilities.logging_utils:conftest.py:200 BASE_URL is set: https://rahulshettyacademy.com/client/#/auth/login
 [32mINFO    [0m utilities.logging_utils:executor.py:158 [ASSERT] LOGIN_PAGE
 [32mINFO    [0m utilities.logging_utils:executor.py:178 page url matches https://rahulshettyacademy.com/client/#/auth/login
 [32mINFO    [0m utilities.logging_utils:executor.py:65 [STEP] Fill → USERNAME_INPUT = c_melski@yahoo.com
@@ -39,4 +39,4 @@
 [32mINFO    [0m utilities.logging_utils:executor.py:158 [ASSERT] INVENTORY_CARDS
 [32mINFO    [0m utilities.logging_utils:executor.py:233 Filtered product dictionary: {'products': [{'product_name': 'ADIDAS ORIGINAL', 'product_price': '$ 11500'}]}
 [32mINFO    [0m utilities.logging_utils:executor.py:256 ADIDAS ORIGINAL contains search text: ADIDAS
-[32mINFO    [0m utilities.logging_utils:test_from_spec.py:16 test_from_spec took 6.21s
+[32mINFO    [0m utilities.logging_utils:test_from_spec.py:16 test_from_spec took 6.10s
