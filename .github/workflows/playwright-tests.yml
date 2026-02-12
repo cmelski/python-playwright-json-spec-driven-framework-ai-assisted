@@ -28,14 +28,6 @@ jobs:
         run: |
           playwright install --with-deps
 
-      - name: Install Allure
-        run: |
-          sudo apt-get install -y default-jre
-          wget https://github.com/allure-framework/allure2/releases/latest/download/allure-2.29.0.tgz
-          tar -zxvf allure-2.29.0.tgz
-          sudo mv allure-2.29.0 /opt/allure
-          sudo ln -s /opt/allure/bin/allure /usr/bin/allure
-
       - name: Run Tests
         run: |
           pytest -rA --log-cli-level=INFO --alluredir=allure-results
