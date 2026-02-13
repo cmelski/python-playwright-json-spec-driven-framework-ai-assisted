@@ -8,7 +8,7 @@ from utilities.scenario_context import ScenarioContext
 
 # measure time of each test using this decorator
 # In pytest, decorators are useful, but fixtures and hooks are often preferred for lifecycle concerns
-# because decorators can hide behavior and make debugging harder.
+# because decorators can hide behavior and make debugging harder
 def measure_time(func):
     def wrapper(page_instance, *args, **kwargs):
         start = time.time()
