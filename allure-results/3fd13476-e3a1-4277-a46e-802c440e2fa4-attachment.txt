@@ -31,14 +31,12 @@
 [32mINFO    [0m utilities.logging_utils:executor.py:299 ADIDAS ORIGINAL price: $ 11500 is correctly between min and max 10000-15000
 [32mINFO    [0m utilities.logging_utils:executor.py:297 Formatted price: 11500
 [32mINFO    [0m utilities.logging_utils:executor.py:299 ZARA COAT 3 price: $ 11500 is correctly between min and max 10000-15000
-[32mINFO    [0m utilities.logging_utils:executor.py:303 Length of unfiltered product dictionary: 3 is > than length of filtered product dictionary: 2
 [32mINFO    [0m utilities.logging_utils:executor.py:116 [STEP] Clear → FILTERS_FORM
 [32mINFO    [0m utilities.logging_utils:executor.py:83 [STEP] Fill → SEARCH_TEXT_FILTER = ADIDAS
 [32mINFO    [0m utilities.logging_utils:executor.py:121 [STEP] Wait → 1000ms
 [32mINFO    [0m utilities.logging_utils:executor.py:202 [ASSERT] INVENTORY_CARDS
 [32mINFO    [0m utilities.logging_utils:executor.py:285 Filtered product dictionary: {'products': [{'product_name': 'ADIDAS ORIGINAL', 'product_price': '$ 11500'}]}
-[32mINFO    [0m utilities.logging_utils:executor.py:313 ADIDAS ORIGINAL contains search text: ADIDAS
-[32mINFO    [0m utilities.logging_utils:executor.py:316 Length of unfiltered product dictionary: 3 is > than length of filtered product dictionary: 1
+[32mINFO    [0m utilities.logging_utils:executor.py:308 ADIDAS ORIGINAL contains search text: ADIDAS
 [32mINFO    [0m utilities.logging_utils:executor.py:116 [STEP] Clear → FILTERS_FORM
 [32mINFO    [0m utilities.logging_utils:executor.py:93 [STEP] Check → #sidebar form input[type='checkbox'] → value = household
 [32mINFO    [0m utilities.logging_utils:executor.py:98 Checkbox filters count: 10
@@ -46,9 +44,9 @@
 [32mINFO    [0m utilities.logging_utils:executor.py:121 [STEP] Wait → 1000ms
 [32mINFO    [0m utilities.logging_utils:executor.py:202 [ASSERT] INVENTORY_CARDS
 [32mINFO    [0m utilities.logging_utils:executor.py:285 Filtered product dictionary: {'products': []}
-[32mINFO    [0m utilities.logging_utils:executor.py:322 Checkbox filter correctly shows 0 products.
+[32mINFO    [0m utilities.logging_utils:executor.py:312 Checkbox filter correctly shows 0 products.
 [32mINFO    [0m utilities.logging_utils:executor.py:116 [STEP] Clear → FILTERS_FORM
 [32mINFO    [0m utilities.logging_utils:executor.py:66 [STEP] Find → ('ZARA', 'IPHONE') in INVENTORY_CARDS and click
 [32mINFO    [0m utilities.logging_utils:executor.py:202 [ASSERT] TOP_MENU_ICONS
-[32mINFO    [0m utilities.logging_utils:executor.py:240 .btn.btn-custom has product_count 2
-[32mINFO    [0m utilities.logging_utils:test_from_spec.py:16 test_from_spec took 10.94s
+[32mINFO    [0m utilities.logging_utils:executor.py:240 Cart icon has product_count: 2
+[32mINFO    [0m utilities.logging_utils:test_from_spec.py:16 test_from_spec took 11.32s

@@ -232,7 +232,7 @@ def execute_assertion(page, assertion: dict, context):
         logger_utility().info(f'{selector} has product_count {rule}')
 
     elif state == "cart_count":
-        page.wait_for_timeout(1000)
+        page.wait_for_timeout(2000)
         cart_icon = locator.filter(has_text=value)
         label_count = cart_icon.locator('label').inner_text().strip()
 
