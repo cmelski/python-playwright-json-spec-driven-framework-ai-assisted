@@ -68,6 +68,8 @@ def execute_step(page, step: dict, context):
                 for item in value:
                     product = page.locator(selector).filter(has_text=item)
                     product.get_by_text('Add To Cart').click()
+                    page.wait_for_timeout(2000)
+
             else:
                 product = page.locator(selector).filter(has_text=value)
                 product.get_by_text('Add To Cart').click()
@@ -199,6 +201,7 @@ def execute_assertion(page, assertion: dict, context):
     selector = SELECTOR_MAP[target]
     locator = page.locator(selector)
 
+
     logger_utility().info(f"[ASSERT] {target}")
 
     if state == "visible":
@@ -222,8 +225,8 @@ def execute_assertion(page, assertion: dict, context):
         logger_utility().info(f'page url matches {selector}')
 
     elif state == "toHaveCount":
-        page.wait_for_timeout(2000)
-        products = page.locator(selector)
+        expect(locator.first).to_be_visible()
+        products = locator
         product_count = products.count()
         logger_utility().info(f'Product count: {product_count}')
         # for i in range(product_count):
@@ -232,11 +235,11 @@ def execute_assertion(page, assertion: dict, context):
         logger_utility().info(f'{selector} has product_count {rule}')
 
     elif state == "cart_count":
-        page.wait_for_timeout(2000)
+        expect(locator.first).to_be_visible()
         cart_icon = locator.filter(has_text=value)
         label_count = cart_icon.locator('label').inner_text().strip()
 
-        assert int(label_count) == rule
+        assert int(label_count) == rule, f'{int(label_count)}, {rule}'
         logger_utility().info(f'{value} icon has product_count: {rule}')
 
     if text == "not.empty":
@@ -268,10 +271,11 @@ def execute_assertion(page, assertion: dict, context):
                               f'Actual: {product_details_page}')
 
     if condition == "products_reflect_filter":
+
         unfiltered_product_dict = context.get(context_key)
         filtered_product_dict = {"products": []
                                  }
-        products = page.locator(selector)
+        products = locator
         product_count = products.count()
         for i in range(product_count):
             product_name = products.nth(i).locator('h5').inner_text().strip()
