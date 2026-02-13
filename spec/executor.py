@@ -117,7 +117,7 @@ def execute_step(page, step: dict, context):
         generic_utilities.reset_form(page, selector)
 
     elif action == "wait":
-        ms = step.get("value", 1000)
+        ms = step.get("value", 2000)
         logger_utility().info(f"[STEP] Wait → {ms}ms")
         page.wait_for_timeout(ms)
 
