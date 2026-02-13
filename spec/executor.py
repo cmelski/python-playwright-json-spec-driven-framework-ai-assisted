@@ -289,6 +289,7 @@ def execute_assertion(page, assertion: dict, context):
         logger_utility().info(f'Filtered product dictionary: {filtered_product_dict}')
 
         if filter_type == 'min_max':
+            page.wait_for_timeout(2000)
             min_price = int(DATA_MAP.get('MIN_PRICE_FILTER'))
             max_price = int(DATA_MAP.get('MAX_PRICE_FILTER'))
             p_name = ''
@@ -304,6 +305,7 @@ def execute_assertion(page, assertion: dict, context):
                                               f'and max {min_price}-{max_price}')
 
         if filter_type == 'search_text':
+            page.wait_for_timeout(2000)
             search_text = DATA_MAP.get('SEARCH_TEXT')
             for item in filtered_product_dict['products']:
                 for k, v in item.items():
@@ -312,5 +314,6 @@ def execute_assertion(page, assertion: dict, context):
                         logger_utility().info(f'{v} contains search text: {search_text}')
 
         if filter_type == 'checkbox':
+            page.wait_for_timeout(2000)
             assert product_count == rule
             logger_utility().info(f'Checkbox filter correctly shows {rule} products.')
