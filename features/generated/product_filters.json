@@ -32,7 +32,7 @@
         {
           "action": "expect",
           "target": "INVENTORY_CARDS",
-          "rule": "products_reflect_filter",
+          "condition": "products_reflect_filter",
           "filter_type": "min_max",
           "context_key": "unfiltered_product_dict"
         }
@@ -43,11 +43,6 @@
         {
           "action": "clear_form_filters",
           "target": "FILTERS_FORM"
-        },
-        {
-          "action": "save_products_unfiltered",
-          "target": "INVENTORY_CARDS",
-          "save_as": "unfiltered_product_dict"
         },
         {
           "action": "fill",
@@ -63,9 +58,43 @@
         {
           "action": "expect",
           "target": "INVENTORY_CARDS",
-          "rule": "products_reflect_filter",
+          "condition": "products_reflect_filter",
           "filter_type": "search_text",
           "context_key": "unfiltered_product_dict"
+        }
+      ]
+    },
+    {
+      "steps": [
+        {
+          "action": "clear_form_filters",
+          "target": "FILTERS_FORM"
+        },
+        {
+          "action": "checkbox",
+          "target": "CHECKBOX_FILTERS",
+          "value": "HOUSEHOLD_FILTER"
+        },
+        {
+          "action": "wait"
+        }
+      ],
+      "assertions": [
+        {
+          "action": "expect",
+          "target": "INVENTORY_CARDS",
+          "condition": "products_reflect_filter",
+          "filter_type": "checkbox",
+          "context_key": "unfiltered_product_dict",
+          "rule": 0
+        }
+      ]
+    },
+    {
+      "steps": [
+        {
+          "action": "clear_form_filters",
+          "target": "FILTERS_FORM"
         }
       ]
     }

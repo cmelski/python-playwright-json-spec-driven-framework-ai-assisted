@@ -4,9 +4,9 @@
       "test_name": "tests/test_from_spec.py::test_from_spec",
       "result": "PASSED",
       "error": "N/A",
-      "test_start": "2026-02-12T12:08:43.277614",
-      "test_end": "2026-02-12T12:08:59.439992",
-      "duration": 6.100413106032647
+      "test_start": "2026-02-13T11:19:51.884697",
+      "test_end": "2026-02-13T11:20:10.551984",
+      "duration": 10.941057380987331
     }
   ]
 }

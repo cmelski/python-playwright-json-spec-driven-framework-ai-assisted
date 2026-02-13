@@ -57,6 +57,24 @@ def execute_step(page, step: dict, context):
             logger_utility().info(f"[STEP] Click → {target}")
             page.click(selector)
 
+    elif action == "add":
+        if target not in SELECTOR_MAP:
+            raise ValueError(f"Unknown selector target: {target}")
+
+        selector = SELECTOR_MAP[target]
+        if raw_value:
+            logger_utility().info(f"[STEP] Find → {value} in {target} and click")
+            if len(value) > 1:
+                for item in value:
+                    product = page.locator(selector).filter(has_text=item)
+                    product.get_by_text('Add To Cart').click()
+            else:
+                product = page.locator(selector).filter(has_text=value)
+                product.get_by_text('Add To Cart').click()
+
+        else:
+            raise ValueError(f"Value not set")
+
     elif action == "fill":
         selector = SELECTOR_MAP.get(target)
         if not selector:
@@ -66,6 +84,29 @@ def execute_step(page, step: dict, context):
         page.fill(selector, value)
         if submit:
             page.locator(selector).press("Enter")
+
+    elif action == "checkbox":
+        selector = SELECTOR_MAP.get(target)
+        if not selector:
+            raise ValueError(f"Unknown fill target: {target}")
+
+        logger_utility().info(f"[STEP] Check → {selector} → value = {value}")
+
+        checkbox_filters = page.locator(selector)
+
+        checkbox_filters_count = checkbox_filters.count()
+        logger_utility().info(f'Checkbox filters count: {checkbox_filters_count}')
+
+        for i in range(checkbox_filters_count):
+            checkbox = checkbox_filters.nth(i)
+
+            # go to parent container and get label text
+            label = checkbox.locator("xpath=ancestor::div[contains(@class,'form-group')]//label").inner_text().strip()
+
+            if label.lower() == value.lower():
+                logger_utility().info(f'{value} checkbox found')
+                checkbox.check()
+                break
 
     elif action == "clear_form_filters":
         selector = SELECTOR_MAP.get(target)
@@ -142,6 +183,9 @@ def execute_assertion(page, assertion: dict, context):
     text = assertion.get("text")
     raw_value = assertion.get("value")
     value = DATA_MAP.get(raw_value, raw_value)
+    contain_text_raw_value = assertion.get("toContainText")
+    contain_text = DATA_MAP.get(contain_text_raw_value, contain_text_raw_value)
+    condition = assertion.get("condition")
     rule = assertion.get("rule")
     filter_type = assertion.get("filter_type")
     context_key = assertion.get("context_key")
@@ -187,6 +231,14 @@ def execute_assertion(page, assertion: dict, context):
         assert f'{product_count} {rule}', f"Expected at least 1 row but found {product_count}"
         logger_utility().info(f'{selector} has product_count {rule}')
 
+    elif state == "cart_count":
+        page.wait_for_timeout(1000)
+        cart_icon = locator.filter(has_text=value)
+        label_count = cart_icon.locator('label').inner_text().strip()
+
+        assert int(label_count) == rule
+        logger_utility().info(f'{value} icon has product_count: {rule}')
+
     if text == "not.empty":
         expect(locator).not_to_be_empty()
         logger_utility().info(f'{selector} is {text}')
@@ -199,11 +251,11 @@ def execute_assertion(page, assertion: dict, context):
         expect(locator).not_to_be_empty()
         logger_utility().info(f'{selector} is {value}')
 
-    elif isinstance(value, str):
-        expect(locator).to_contain_text(value)
-        logger_utility().info(f'{selector} contains text: {value}')
+    if isinstance(contain_text, str):
+        expect(locator).to_contain_text(contain_text)
+        logger_utility().info(f'{selector} contains text: {contain_text}')
 
-    if rule == "product_details_match":
+    if condition == "product_details_match":
         expected_product_details = context.get(context_key)
         product_name = page.locator(selector + ' h2').inner_text().strip()
         product_price = page.locator(selector + ' h3').inner_text().strip()
@@ -215,7 +267,7 @@ def execute_assertion(page, assertion: dict, context):
         logger_utility().info(f'Product details match. Expected: {expected_product_details} '
                               f'Actual: {product_details_page}')
 
-    if rule == "products_reflect_filter":
+    if condition == "products_reflect_filter":
         unfiltered_product_dict = context.get(context_key)
         filtered_product_dict = {"products": []
                                  }
@@ -247,6 +299,11 @@ def execute_assertion(page, assertion: dict, context):
                         logger_utility().info(f'{p_name} price: {v} is correctly between min '
                                               f'and max {min_price}-{max_price}')
 
+            assert len(unfiltered_product_dict['products']) > len(filtered_product_dict['products'])
+            logger_utility().info(f'Length of unfiltered product dictionary: {len(unfiltered_product_dict['products'])}'
+                              f' is > than length of filtered product dictionary: '
+                              f'{len(filtered_product_dict['products'])}')
+
         if filter_type == 'search_text':
             search_text = DATA_MAP.get('SEARCH_TEXT')
             for item in filtered_product_dict['products']:
@@ -255,3 +312,11 @@ def execute_assertion(page, assertion: dict, context):
                         assert search_text in v
                         logger_utility().info(f'{v} contains search text: {search_text}')
 
+            assert len(unfiltered_product_dict['products']) > len(filtered_product_dict['products'])
+            logger_utility().info(f'Length of unfiltered product dictionary: {len(unfiltered_product_dict['products'])}'
+                                  f' is > than length of filtered product dictionary: '
+                                  f'{len(filtered_product_dict['products'])}')
+
+        if filter_type == 'checkbox':
+            assert product_count == rule
+            logger_utility().info(f'Checkbox filter correctly shows {rule} products.')

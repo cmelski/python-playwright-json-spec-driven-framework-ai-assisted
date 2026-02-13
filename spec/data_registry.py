@@ -8,5 +8,8 @@ DATA_MAP = {
     "PRODUCT_TO_VIEW": "ADIDAS",
     "MIN_PRICE_FILTER": "10000",
     "MAX_PRICE_FILTER": "15000",
-    "SEARCH_TEXT": "ADIDAS"
+    "SEARCH_TEXT": "ADIDAS",
+    "HOUSEHOLD_FILTER": "household",
+    "CART_ITEMS": ("ZARA", "IPHONE"),
+    "CART_ICON_TEXT": "Cart"
 }

@@ -24,14 +24,14 @@
         {
           "action": "expect",
           "target": "PRODUCT_NAME",
-          "value": "PRODUCT_TO_VIEW"
+          "toContainText": "PRODUCT_TO_VIEW"
 
         },
 
         {
           "action": "expect",
           "target": "PRODUCT_DETAILS",
-          "rule": "product_details_match",
+          "condition": "product_details_match",
           "context_key": "product_details"
 
         }

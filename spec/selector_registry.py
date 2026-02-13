@@ -13,6 +13,9 @@ SELECTOR_MAP = {
     "SEARCH_TEXT_FILTER": "#sidebar form input[name='search']",
     "MIN_PRICE_FILTER": "#sidebar form input[name='minPrice']",
     "MAX_PRICE_FILTER": "#sidebar form input[name='maxPrice']",
-    "CONTINUE_SHOPPING_BUTTON": ".continue"
+    "CONTINUE_SHOPPING_BUTTON": ".continue",
+    "CHECKBOX_FILTERS": "#sidebar form input[type='checkbox']",
+    "TOP_MENU_ICONS": ".btn.btn-custom"
+
 
 }

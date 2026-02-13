@@ -63,3 +63,17 @@ def test_from_spec(page_instance):
                 for assertion in block["assertions"]:
                     execute_assertion(page_instance, assertion, context)
 
+    with open("features/generated/build_cart.json") as f:
+        spec = json.load(f)
+        context = ScenarioContext()
+
+        for block in spec["flow"]:
+
+            if "steps" in block:
+                for step in block["steps"]:
+                    execute_step(page_instance, step, context)
+
+            if "assertions" in block:
+                for assertion in block["assertions"]:
+                    execute_assertion(page_instance, assertion, context)
+

@@ -1,0 +1,30 @@
+{
+  "feature": "BUILD_CART",
+  "scenario": "User can add items to shopping cart",
+    "flow": [
+    {
+      "steps": [
+
+        {
+          "action": "add",
+          "target": "INVENTORY_CARDS",
+          "value": "CART_ITEMS"
+
+        }
+
+      ],
+      "assertions": [
+        {
+          "action": "expect",
+          "target": "TOP_MENU_ICONS",
+          "value": "CART_ICON_TEXT",
+          "state": "cart_count",
+          "rule": 2
+
+        }
+      ]
+
+    }
+
+  ]
+}
