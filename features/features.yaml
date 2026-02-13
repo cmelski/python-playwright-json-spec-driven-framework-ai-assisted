@@ -6,3 +6,5 @@ features:
     description: User can view a product's details
   PRODUCT_FILTERS:
     description: Product filters work as expected
+  BUILD_CART:
+    description: User can add items to shopping cart
