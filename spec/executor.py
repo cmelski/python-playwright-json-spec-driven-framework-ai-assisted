@@ -300,9 +300,9 @@ def execute_assertion(page, assertion: dict, context):
                                               f'and max {min_price}-{max_price}')
 
             assert len(unfiltered_product_dict['products']) > len(filtered_product_dict['products'])
-            logger_utility().info(f'Length of unfiltered product dictionary: {len(unfiltered_product_dict['products'])}'
+            logger_utility().info(f'Length of unfiltered product dictionary: {len(unfiltered_product_dict["products"])}'
                               f' is > than length of filtered product dictionary: '
-                              f'{len(filtered_product_dict['products'])}')
+                              f'{len(filtered_product_dict["products"])}')
 
         if filter_type == 'search_text':
             search_text = DATA_MAP.get('SEARCH_TEXT')
@@ -313,9 +313,9 @@ def execute_assertion(page, assertion: dict, context):
                         logger_utility().info(f'{v} contains search text: {search_text}')
 
             assert len(unfiltered_product_dict['products']) > len(filtered_product_dict['products'])
-            logger_utility().info(f'Length of unfiltered product dictionary: {len(unfiltered_product_dict['products'])}'
+            logger_utility().info(f'Length of unfiltered product dictionary: {len(unfiltered_product_dict["products"])}'
                                   f' is > than length of filtered product dictionary: '
-                                  f'{len(filtered_product_dict['products'])}')
+                                  f'{len(filtered_product_dict["products"])}')
 
         if filter_type == 'checkbox':
             assert product_count == rule
