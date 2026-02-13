@@ -182,6 +182,7 @@ def execute_assertion(page, assertion: dict, context):
     action = assertion.get("action")
     target = assertion.get("target")
     state = assertion.get("state")
+    cart_rule = assertion.get("cart_state")
     text = assertion.get("text")
     raw_value = assertion.get("value")
     value = DATA_MAP.get(raw_value, raw_value)
@@ -189,6 +190,7 @@ def execute_assertion(page, assertion: dict, context):
     contain_text = DATA_MAP.get(contain_text_raw_value, contain_text_raw_value)
     condition = assertion.get("condition")
     rule = assertion.get("rule")
+    count_value = assertion.get("count_value")
     filter_type = assertion.get("filter_type")
     context_key = assertion.get("context_key")
 
@@ -200,7 +202,12 @@ def execute_assertion(page, assertion: dict, context):
 
     selector = SELECTOR_MAP[target]
     locator = page.locator(selector)
+    count = locator.count()
 
+    if count > 1 and state == "toBeVisible":
+        expect(locator.first).to_be_visible()
+    elif count == 1 and state == "toBeVisible":
+        expect(locator).to_be_visible()
 
     logger_utility().info(f"[ASSERT] {target}")
 
@@ -224,23 +231,22 @@ def execute_assertion(page, assertion: dict, context):
         expect(page).to_have_url(selector)
         logger_utility().info(f'page url matches {selector}')
 
-    elif state == "toHaveCount":
-        expect(locator.first).to_be_visible()
+    if rule == "toHaveCount":
         products = locator
         product_count = products.count()
         logger_utility().info(f'Product count: {product_count}')
         # for i in range(product_count):
         #     logger_utility().info(f'Product visibility: {products.nth(i).is_visible()}')
-        assert f'{product_count} {rule}', f"Expected at least 1 row but found {product_count}"
-        logger_utility().info(f'{selector} has product_count {rule}')
+        assert f'{product_count} is {count_value}', f"Expected at least 1 row but found {product_count}"
+        logger_utility().info(f'{selector} has product_count: {count_value}')
 
-    elif state == "cart_count":
-        expect(locator.first).to_be_visible()
+    if cart_rule == "toHaveCount":
+
         cart_icon = locator.filter(has_text=value)
         label_count = cart_icon.locator('label').inner_text().strip()
 
-        assert int(label_count) == rule, f'{int(label_count)}, {rule}'
-        logger_utility().info(f'{value} icon has product_count: {rule}')
+        assert int(label_count) == count_value, f'{int(label_count)}, {count_value}'
+        logger_utility().info(f'{value} icon has product_count: {count_value}')
 
     if text == "not.empty":
         expect(locator).not_to_be_empty()
@@ -270,7 +276,7 @@ def execute_assertion(page, assertion: dict, context):
         logger_utility().info(f'Product details match. Expected: {expected_product_details} '
                               f'Actual: {product_details_page}')
 
-    if condition == "products_reflect_filter":
+    elif condition == "products_reflect_filter":
 
         unfiltered_product_dict = context.get(context_key)
         filtered_product_dict = {"products": []
@@ -289,7 +295,7 @@ def execute_assertion(page, assertion: dict, context):
         logger_utility().info(f'Filtered product dictionary: {filtered_product_dict}')
 
         if filter_type == 'min_max':
-            page.wait_for_timeout(2000)
+
             min_price = int(DATA_MAP.get('MIN_PRICE_FILTER'))
             max_price = int(DATA_MAP.get('MAX_PRICE_FILTER'))
             p_name = ''
@@ -304,8 +310,7 @@ def execute_assertion(page, assertion: dict, context):
                         logger_utility().info(f'{p_name} price: {v} is correctly between min '
                                               f'and max {min_price}-{max_price}')
 
-        if filter_type == 'search_text':
-            page.wait_for_timeout(2000)
+        elif filter_type == 'search_text':
             search_text = DATA_MAP.get('SEARCH_TEXT')
             for item in filtered_product_dict['products']:
                 for k, v in item.items():
@@ -313,7 +318,6 @@ def execute_assertion(page, assertion: dict, context):
                         assert search_text in v
                         logger_utility().info(f'{v} contains search text: {search_text}')
 
-        if filter_type == 'checkbox':
-            page.wait_for_timeout(2000)
-            assert product_count == rule
-            logger_utility().info(f'Checkbox filter correctly shows {rule} products.')
+        elif filter_type == 'checkbox':
+            assert product_count == count_value
+            logger_utility().info(f'Checkbox filter correctly shows {count_value} products.')

@@ -32,6 +32,7 @@
         {
           "action": "expect",
           "target": "INVENTORY_CARDS",
+          "state": "toBeVisible",
           "condition": "products_reflect_filter",
           "filter_type": "min_max",
           "context_key": "unfiltered_product_dict"
@@ -58,6 +59,7 @@
         {
           "action": "expect",
           "target": "INVENTORY_CARDS",
+          "state": "toBeVisible",
           "condition": "products_reflect_filter",
           "filter_type": "search_text",
           "context_key": "unfiltered_product_dict"
@@ -86,7 +88,8 @@
           "condition": "products_reflect_filter",
           "filter_type": "checkbox",
           "context_key": "unfiltered_product_dict",
-          "rule": 0
+          "rule": "toHaveCount",
+          "count_value": 0
         }
       ]
     },

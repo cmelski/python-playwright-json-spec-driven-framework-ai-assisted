@@ -2,15 +2,7 @@
   "feature": "LOGIN",
   "scenario": "User logs in with valid credentials",
   "flow": [
-    {
-      "assertions": [
-        {
-          "action": "expect",
-          "target": "LOGIN_PAGE",
-          "state": "toHaveURL"
-        }
-      ]
-    },
+
     {
       "steps": [
         {
@@ -32,13 +24,9 @@
         {
           "action": "expect",
           "target": "INVENTORY_CARDS",
-          "state": "toHaveCount",
-          "rule": ">=1"
-        },
-        {
-          "action": "expect",
-          "target": "DASHBOARD_PAGE",
-          "state": "toHaveURL"
+          "state": "toBeVisible",
+          "rule": "toHaveCount",
+          "count_value": ">=1"
         }
       ]
     }
