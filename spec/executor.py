@@ -295,7 +295,7 @@ def execute_assertion(page, assertion: dict, context):
         logger_utility().info(f'Filtered product dictionary: {filtered_product_dict}')
 
         if filter_type == 'min_max':
-
+            page.wait_for_timeout(1000)
             min_price = int(DATA_MAP.get('MIN_PRICE_FILTER'))
             max_price = int(DATA_MAP.get('MAX_PRICE_FILTER'))
             p_name = ''
