@@ -1,0 +1,54 @@
+{
+  "feature": "CHECKOUT",
+  "scenario": "User completes a purchase and checks out",
+  "flow": [
+    {
+      "steps": [
+        {
+          "action": "click",
+          "target": "CART_BUTTON"
+        },
+        {
+          "action": "click",
+          "target": "CHECKOUT_BUTTON"
+        },
+        {
+          "action": "fill",
+          "target": "FIRST_NAME_INPUT",
+          "value": "USER_FIRST_NAME"
+        },
+        {
+          "action": "fill",
+          "target": "LAST_NAME_INPUT",
+          "value": "USER_LAST_NAME"
+        },
+        {
+          "action": "fill",
+          "target": "ZIP_CODE_INPUT",
+          "value": "USER_ZIP_CODE"
+        },
+        {
+          "action": "click",
+          "target": "CONTINUE_BUTTON"
+        },
+        {
+          "action": "click",
+          "target": "FINISH_BUTTON"
+        }
+      ],
+      "assertions": [
+        {
+          "action": "expect",
+          "target": "ORDER_CONFIRMATION_MESSAGE",
+          "state": "toBeVisible",
+          "toContainText": "Thank you for your order"
+        },
+        {
+          "action": "expect",
+          "target": "CART_BUTTON",
+          "state": "toBeEnabled"
+        }
+      ]
+    }
+  ]
+}

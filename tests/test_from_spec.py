@@ -19,6 +19,25 @@ def measure_time(func):
     return wrapper
 
 
+@pytest.mark.invalid_login
+@measure_time
+def test_invalid_login(page_instance):
+    with open("features/generated/invalid_login.json") as f:
+        spec = json.load(f)
+        context = ScenarioContext()
+
+        for block in spec["flow"]:
+
+            if "steps" in block:
+                for step in block["steps"]:
+                    execute_step(page_instance, step, context)
+
+            if "assertions" in block:
+                for assertion in block["assertions"]:
+                    execute_assertion(page_instance, assertion, context)
+
+
+@pytest.mark.rest
 @measure_time
 def test_from_spec(page_instance):
     with open("features/generated/login.json") as f:
@@ -76,4 +95,3 @@ def test_from_spec(page_instance):
             if "assertions" in block:
                 for assertion in block["assertions"]:
                     execute_assertion(page_instance, assertion, context)
-

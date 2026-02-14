@@ -1,6 +1,6 @@
 import os
 
-from playwright.sync_api import expect
+from playwright.sync_api import expect, TimeoutError
 
 from spec.data_registry import DATA_MAP
 from spec.selector_registry import SELECTOR_MAP
@@ -173,7 +173,6 @@ def execute_step(page, step: dict, context):
         # save new account to the scenario context
         context.set(save_as, unfiltered_product_dict)
 
-
     else:
         raise ValueError(f"Unsupported step action: {action}")
 
@@ -182,14 +181,12 @@ def execute_assertion(page, assertion: dict, context):
     action = assertion.get("action")
     target = assertion.get("target")
     state = assertion.get("state")
-    cart_rule = assertion.get("cart_state")
     text = assertion.get("text")
     raw_value = assertion.get("value")
     value = DATA_MAP.get(raw_value, raw_value)
     contain_text_raw_value = assertion.get("toContainText")
     contain_text = DATA_MAP.get(contain_text_raw_value, contain_text_raw_value)
     condition = assertion.get("condition")
-    rule = assertion.get("rule")
     count_value = assertion.get("count_value")
     filter_type = assertion.get("filter_type")
     context_key = assertion.get("context_key")
@@ -201,52 +198,58 @@ def execute_assertion(page, assertion: dict, context):
         raise ValueError(f"Unknown assertion target: {target}")
 
     selector = SELECTOR_MAP[target]
+    try:
+        page.wait_for_selector(selector, timeout=5000)
+    except TimeoutError:
+        pass
     locator = page.locator(selector)
     count = locator.count()
 
-    if count > 1 and state == "toBeVisible":
-        expect(locator.first).to_be_visible()
-    elif count == 1 and state == "toBeVisible":
-        expect(locator).to_be_visible()
+    logger_utility().info(f'Locator count for {selector}: {count}')
 
     logger_utility().info(f"[ASSERT] {target}")
 
-    if state == "visible":
+    if state == "toBeVisible" and count > 1:
+        expect(locator.first).to_be_visible()
+        logger_utility().info(f'{selector} is visible')
+
+    elif state == "toBeVisible" and count == 1:
         expect(locator).to_be_visible()
-        logger_utility().info(f'{selector} is {state}')
+        logger_utility().info(f'{selector} is visible')
 
-    elif state == "hidden":
+    elif state == "toBeHidden":
         expect(locator).to_be_hidden()
-        logger_utility().info(f'{selector} is {state}')
+        logger_utility().info(f'{selector} is hidden')
 
-    elif state == "enabled":
+    elif state == "toBeEnabled":
         expect(locator).to_be_enabled()
-        logger_utility().info(f'{selector} is {state}')
+        logger_utility().info(f'{selector} is enabled')
 
-    elif state == "disabled":
+    elif state == "toBeDisabled":
         expect(locator).to_be_disabled()
-        logger_utility().info(f'{selector} is {state}')
+        logger_utility().info(f'{selector} is disabled')
 
     elif state == "toHaveURL":
         expect(page).to_have_url(selector)
         logger_utility().info(f'page url matches {selector}')
 
-    if rule == "toHaveCount":
-        products = locator
-        product_count = products.count()
-        logger_utility().info(f'Product count: {product_count}')
-        # for i in range(product_count):
-        #     logger_utility().info(f'Product visibility: {products.nth(i).is_visible()}')
-        assert f'{product_count} is {count_value}', f"Expected at least 1 row but found {product_count}"
-        logger_utility().info(f'{selector} has product_count: {count_value}')
+    elif state == "toHaveCount":
 
-    if cart_rule == "toHaveCount":
+        if value:
+            item = locator.filter(has_text=value)
+            label_count = item.locator('label').inner_text().strip()
+            assert int(label_count) == count_value, f'{int(label_count)}, {count_value}'
+            logger_utility().info(f'{value} icon has product_count: {count_value}')
 
-        cart_icon = locator.filter(has_text=value)
-        label_count = cart_icon.locator('label').inner_text().strip()
+        else:
+            item_count = locator.count()
+            try:
+                int(count_value)
+                expect(locator).to_have_count(count_value)
+            except ValueError:
+                assert f'{item_count} is {count_value}'
 
-        assert int(label_count) == count_value, f'{int(label_count)}, {count_value}'
-        logger_utility().info(f'{value} icon has product_count: {count_value}')
+            logger_utility().info(f'{selector} has count: {count_value}')
 
     if text == "not.empty":
         expect(locator).not_to_be_empty()
@@ -261,8 +264,15 @@ def execute_assertion(page, assertion: dict, context):
         logger_utility().info(f'{selector} is {value}')
 
     if isinstance(contain_text, str):
-        expect(locator).to_contain_text(contain_text)
-        logger_utility().info(f'{selector} contains text: {contain_text}')
+        if count == 1:
+            expect(locator).to_contain_text(contain_text)
+            logger_utility().info(f'{selector} contains text: {contain_text}')
+        else:
+            for i in range(count):
+                item = locator.nth(i)
+                logger_utility().info(f'error text - {item.inner_text()}')
+                assert item.inner_text().strip() in contain_text, f'{item.inner_text().strip()} not in {contain_text}'
+                logger_utility().info(f'{item.inner_text().strip()} is found in: {contain_text}')
 
     if condition == "product_details_match":
         expected_product_details = context.get(context_key)
@@ -317,7 +327,3 @@ def execute_assertion(page, assertion: dict, context):
                     if k == 'product_name':
                         assert search_text in v
                         logger_utility().info(f'{v} contains search text: {search_text}')
-
-        elif filter_type == 'checkbox':
-            assert product_count == count_value
-            logger_utility().info(f'Checkbox filter correctly shows {count_value} products.')

@@ -1,0 +1,161 @@
+{
+  "feature": "INVALID_LOGIN",
+  "scenario": "User cannot log in with invalid credentials",
+  "flow": [
+    {
+      "steps": [
+        {
+          "action": "fill",
+          "target": "USERNAME_INPUT",
+          "value": "INVALID_USERNAME"
+        },
+        {
+          "action": "fill",
+          "target": "PASSWORD_INPUT",
+          "value": "INVALID_PASSWORD"
+        },
+        {
+          "action": "click",
+          "target": "LOGIN_BUTTON"
+        }
+      ],
+      "assertions": [
+        {
+          "action": "expect",
+          "target": "ERROR_MESSAGE_ALERT",
+          "state": "toBeVisible"
+        },
+        {
+          "action": "expect",
+          "target": "ERROR_MESSAGE_ALERT",
+          "toContainText": "INVALID_LOGIN_ERROR_MESSAGE"
+        },
+        {
+          "action": "expect",
+          "target": "LOGIN_BUTTON",
+          "state": "toBeEnabled"
+        }
+      ]
+    },
+    {
+      "steps": [
+        {
+          "action": "wait"
+        },
+        {
+          "action": "fill",
+          "target": "USERNAME_INPUT",
+          "value": "VALID_USERNAME"
+        },
+        {
+          "action": "fill",
+          "target": "PASSWORD_INPUT",
+          "value": "INVALID_PASSWORD"
+        },
+        {
+          "action": "click",
+          "target": "LOGIN_BUTTON"
+        }
+      ],
+      "assertions": [
+        {
+          "action": "expect",
+          "target": "ERROR_MESSAGE_ALERT",
+          "state": "toBeVisible"
+        },
+        {
+          "action": "expect",
+          "target": "ERROR_MESSAGE_ALERT",
+          "toContainText": "INVALID_LOGIN_ERROR_MESSAGE"
+        },
+        {
+          "action": "expect",
+          "target": "LOGIN_BUTTON",
+          "state": "toBeEnabled"
+        }
+      ]
+    },
+    {
+      "steps": [
+        {
+          "action": "wait"
+        },
+        {
+          "action": "fill",
+          "target": "USERNAME_INPUT",
+          "value": "INVALID_USERNAME"
+        },
+        {
+          "action": "fill",
+          "target": "PASSWORD_INPUT",
+          "value": "VALID_PASSWORD"
+        },
+        {
+          "action": "click",
+          "target": "LOGIN_BUTTON"
+        }
+      ],
+      "assertions": [
+        {
+          "action": "expect",
+          "target": "ERROR_MESSAGE_ALERT",
+          "state": "toBeVisible"
+        },
+        {
+          "action": "expect",
+          "target": "ERROR_MESSAGE_ALERT",
+          "toContainText": "INVALID_LOGIN_ERROR_MESSAGE"
+        },
+        {
+          "action": "expect",
+          "target": "LOGIN_BUTTON",
+          "state": "toBeEnabled"
+        }
+      ]
+    },
+    {
+      "steps": [
+        {
+          "action": "wait"
+        },
+        {
+          "action": "fill",
+          "target": "USERNAME_INPUT",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "PASSWORD_INPUT",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "LOGIN_BUTTON"
+        }
+      ],
+      "assertions": [
+        {
+          "action": "expect",
+          "target": "EMPTY_USERNAME_PASSWORD_ERROR",
+          "state": "toBeVisible"
+        },
+        {
+          "action": "expect",
+          "target": "EMPTY_USERNAME_PASSWORD_ERROR",
+          "state": "toHaveCount",
+          "count_value": 2
+        },
+        {
+          "action": "expect",
+          "target": "EMPTY_USERNAME_PASSWORD_ERROR",
+          "toContainText": "EMAIL_PASSWORD_REQUIRED_ERROR_MESSAGE"
+        },
+        {
+          "action": "expect",
+          "target": "LOGIN_BUTTON",
+          "state": "toBeEnabled"
+        }
+      ]
+    }
+  ]
+}

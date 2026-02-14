@@ -24,7 +24,13 @@
         {
           "action": "expect",
           "target": "PRODUCT_NAME",
-          "state": "toBeVisible",
+          "state": "toBeVisible"
+
+        },
+
+        {
+          "action": "expect",
+          "target": "PRODUCT_NAME",
           "toContainText": "PRODUCT_TO_VIEW"
 
         },
@@ -32,7 +38,13 @@
         {
           "action": "expect",
           "target": "PRODUCT_DETAILS",
-          "state": "toBeVisible",
+          "state": "toBeVisible"
+
+        },
+
+        {
+          "action": "expect",
+          "target": "PRODUCT_DETAILS",
           "condition": "product_details_match",
           "context_key": "product_details"
 

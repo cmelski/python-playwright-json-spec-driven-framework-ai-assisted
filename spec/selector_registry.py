@@ -6,6 +6,8 @@ SELECTOR_MAP = {
     "USERNAME_INPUT": "#userEmail",
     "PASSWORD_INPUT": "#userPassword",
     "LOGIN_BUTTON": "input[value='Login']",
+    "ERROR_MESSAGE_ALERT": "div[role='alert']",
+    "EMPTY_USERNAME_PASSWORD_ERROR": "div[class*='invalid-feedback']",
     "INVENTORY_CARDS": ".card",
     "PRODUCT_DETAILS": ".row",
     "PRODUCT_NAME": ".row h2",

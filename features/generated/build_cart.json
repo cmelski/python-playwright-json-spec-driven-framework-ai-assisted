@@ -17,9 +17,13 @@
         {
           "action": "expect",
           "target": "TOP_MENU_ICONS",
-          "state": "toBeVisible",
+          "state": "toBeVisible"
+        },
+        {
+          "action": "expect",
+          "target": "TOP_MENU_ICONS",
           "value": "CART_ICON_TEXT",
-          "cart_state": "toHaveCount",
+          "state": "toHaveCount",
           "count_value": 2
 
         }

@@ -24,10 +24,17 @@
         {
           "action": "expect",
           "target": "INVENTORY_CARDS",
-          "state": "toBeVisible",
-          "rule": "toHaveCount",
+          "state": "toBeVisible"
+        },
+        {
+          "action": "expect",
+          "target": "INVENTORY_CARDS",
+          "state": "toHaveCount",
           "count_value": ">=1"
+
         }
+
+
       ]
     }
 
